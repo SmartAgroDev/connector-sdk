@@ -4,5 +4,5 @@ import io.vertx.core.net.NetSocket
 
 interface TcpMessageHandler : MessageHandler {
 
-    fun onConnect(socket: NetSocket)
+    suspend fun onConnect(socket: NetSocket)
 }

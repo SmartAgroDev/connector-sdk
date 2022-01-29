@@ -3,15 +3,14 @@ package ru.smartagro.connector.sdk.utils
 import io.vertx.core.Vertx
 import io.vertx.kotlin.core.executeBlockingAwait
 import io.vertx.kotlin.coroutines.dispatcher
-import kotlinx.coroutines.GlobalScope
+import io.vertx.kotlin.coroutines.receiveChannelHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-lateinit var vertxInstance: Vertx
 
 suspend fun <T> launchBlocking(f: () -> T): T {
 
-    return Vertx.currentContext().owner().executeBlockingAwait<T> {
+    return Vertx.currentContext().executeBlockingAwait<T> {
         try {
             it.complete(f())
         } catch (t: Throwable) {
@@ -22,14 +21,15 @@ suspend fun <T> launchBlocking(f: () -> T): T {
 
 fun <T> await(f: suspend () -> T): T {
 
-    return runBlocking(vertxInstance.dispatcher()) {
+    return runBlocking(Vertx.currentContext().dispatcher()) {
         f()
     }
 }
 
-fun async(f: suspend () -> Unit) {
-
-    GlobalScope.launch(vertxInstance.dispatcher()) {
-        f()
+fun <T> asyncHandler(handler: suspend (T) -> Unit) = Vertx.currentContext().owner().receiveChannelHandler<T>().apply {
+    launch(coroutineContext) {
+        for (it in this@apply) {
+            handler(it)
+        }
     }
 }
