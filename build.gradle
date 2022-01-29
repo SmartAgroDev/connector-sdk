@@ -1,8 +1,8 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
-    id "org.jetbrains.kotlin.plugin.spring" version "1.3.72"
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id "org.jetbrains.kotlin.plugin.spring" version "1.5.10"
 }
 
 group 'ru.smartagro.connector'
@@ -33,8 +33,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '6.7.1'
 }
