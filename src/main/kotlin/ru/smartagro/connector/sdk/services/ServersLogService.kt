@@ -94,4 +94,11 @@ interface ServersLogService {
         remoteAddress: String?,
         protocol: String
     )
+
+    suspend fun logOnClose(
+        localPort: Int,
+        remotePort: Int,
+        remoteAddress: String?,
+        protocol: String
+    )
 }
