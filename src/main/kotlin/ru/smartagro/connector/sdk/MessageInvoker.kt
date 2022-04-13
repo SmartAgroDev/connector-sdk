@@ -8,5 +8,7 @@ interface MessageInvoker {
     fun consumeBytesFrom(
         socket: NetSocket,
         onBytes: suspend ((Buffer) -> Unit) = {},
-        onMessage: suspend (Buffer) -> Unit)
+        onError: suspend (Throwable) -> Unit = {},
+        onMessage: suspend (Buffer) -> Unit,
+    )
 }
